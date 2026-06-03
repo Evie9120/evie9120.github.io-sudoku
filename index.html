@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Sudoku Zen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;700&family=Lato:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="sudoku.css"/>
+</head>
+<body>
+
+  <!-- ══════════════ START SCREEN ══════════════ -->
+  <div id="screen-start" class="screen active">
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <div class="start-panel">
+      <div class="logo-block">
+        <span class="logo-kanji">数独</span>
+        <div class="logo-text-wrap">
+          <h1 class="logo-title">Sudoku Zen</h1>
+          <p class="logo-tagline">Fill the grid. Clear your mind.</p>
+        </div>
+      </div>
+
+      <div class="mini-grid-demo" aria-hidden="true">
+        <div class="mgd-inner" id="mini-demo"></div>
+      </div>
+
+      <div class="diff-section">
+        <p class="section-label">SELECT DIFFICULTY</p>
+        <div class="diff-tabs">
+          <button class="diff-tab active" data-diff="easy">
+            <span class="diff-name">Easy</span>
+            <span class="diff-desc">36 clues</span>
+          </button>
+          <button class="diff-tab" data-diff="medium">
+            <span class="diff-name">Medium</span>
+            <span class="diff-desc">28 clues</span>
+          </button>
+          <button class="diff-tab" data-diff="hard">
+            <span class="diff-name">Hard</span>
+            <span class="diff-desc">22 clues</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="rules-strip">
+        <div class="rule"><span class="rule-num">1</span>Fill every row with 1–9, no repeats</div>
+        <div class="rule"><span class="rule-num">2</span>Fill every column with 1–9, no repeats</div>
+        <div class="rule"><span class="rule-num">3</span>Fill every 3×3 box with 1–9, no repeats</div>
+      </div>
+
+      <div class="start-actions">
+        <button id="btn-start" class="btn-start-game">
+          Begin Puzzle
+          <svg class="btn-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <button id="btn-sound-start" class="btn-sound-pill">🔊 Sound On</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ GAME SCREEN ══════════════ -->
+  <div id="screen-game" class="screen">
+    <header class="game-header">
+      <button id="btn-back" class="hdr-btn" title="Back to menu">←</button>
+      <div class="hdr-center">
+        <span class="hdr-diff" id="hdr-diff">Easy</span>
+        <div class="hdr-timer-wrap">
+          <span class="hdr-timer-icon">⏱</span>
+          <span id="hdr-timer" class="hdr-timer">00:00</span>
+        </div>
+      </div>
+      <div class="hdr-right">
+        <span class="hdr-mistake-label">Mistakes</span>
+        <span id="hdr-mistakes" class="hdr-mistakes">0 / 3</span>
+      </div>
+      <button id="btn-pause" class="hdr-btn" title="Pause game">⏸</button>
+    </header>
+
+    <!-- Pause overlay -->
+    <div id="pause-overlay" class="pause-overlay hidden">
+      <div class="pause-card">
+        <div class="pause-icon">⏸</div>
+        <h3 class="pause-title">Paused</h3>
+        <p class="pause-sub">Game is paused </p>
+        <button id="btn-resume" class="btn-start-game" style="width:100%;margin-top:8px;">▶ Resume</button>
+      </div>
+    </div>
+
+    <main class="game-main">
+      <div class="board-wrap">
+        <div id="sudoku-board" class="sudoku-board"></div>
+      </div>
+
+      <div class="controls-wrap">
+        <div class="tool-row">
+          <button class="tool-btn" id="btn-notes" title="Toggle note mode">
+            <span class="tool-icon">✏️</span>
+            <span class="tool-label">Notes</span>
+          </button>
+          <button class="tool-btn" id="btn-erase" title="Erase cell">
+            <span class="tool-icon">⌫</span>
+            <span class="tool-label">Erase</span>
+          </button>
+          <button class="tool-btn" id="btn-hint-game" title="Reveal one cell">
+            <span class="tool-icon">💡</span>
+            <span class="tool-label">Hint <span id="hint-count">(3)</span></span>
+          </button>
+          <button class="tool-btn" id="btn-undo" title="Undo">
+            <span class="tool-icon">↩</span>
+            <span class="tool-label">Undo</span>
+          </button>
+        </div>
+
+        <div class="numpad" id="numpad">
+          <button class="num-btn" data-num="1">1</button>
+          <button class="num-btn" data-num="2">2</button>
+          <button class="num-btn" data-num="3">3</button>
+          <button class="num-btn" data-num="4">4</button>
+          <button class="num-btn" data-num="5">5</button>
+          <button class="num-btn" data-num="6">6</button>
+          <button class="num-btn" data-num="7">7</button>
+          <button class="num-btn" data-num="8">8</button>
+          <button class="num-btn" data-num="9">9</button>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-label-row">
+            <span>Cells Filled</span>
+            <span id="progress-label">0 / 81</span>
+          </div>
+          <div class="progress-track">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ══════════════ END SCREEN ══════════════ -->
+  <div id="screen-end" class="screen">
+    <div class="end-panel">
+      <div id="end-badge" class="end-badge">✅</div>
+      <h2 id="end-heading" class="end-heading">Puzzle Complete!</h2>
+      <p  id="end-sub"     class="end-sub">Your results</p>
+
+      <div class="end-stats-grid">
+        <div class="end-stat">
+          <span class="es-icon">⏱</span>
+          <span id="es-time"   class="es-val">00:00</span>
+          <span class="es-lbl">Time</span>
+        </div>
+        <div class="end-stat">
+          <span class="es-icon">❌</span>
+          <span id="es-mistakes" class="es-val">0</span>
+          <span class="es-lbl">Mistakes</span>
+        </div>
+        <div class="end-stat">
+          <span class="es-icon">💡</span>
+          <span id="es-hints" class="es-val">0</span>
+          <span class="es-lbl">Hints Used</span>
+        </div>
+        <div class="end-stat">
+          <span class="es-icon">⭐</span>
+          <span id="es-stars" class="es-val">★★★</span>
+          <span class="es-lbl">Rating</span>
+        </div>
+      </div>
+
+      <div id="end-msg" class="end-msg"></div>
+
+      <div class="end-actions">
+        <button id="btn-new-puzzle" class="btn-start-game">New Puzzle</button>
+        <button id="btn-menu-end"   class="btn-ghost">Main Menu</button>
+      </div>
+    </div>
+    <div id="ink-splash" class="ink-splash"></div>
+  </div>
+
+  <script src="sudoku.js"></script>
+</body>
+</html>
