@@ -1,7 +1,5 @@
 /* ═══════════════════════════════════════════
    Sudoku Zen — sudoku.css
-   Aesthetic: Paper & Ink — clean, minimal,
-   graph-paper texture, warm off-white
 ═══════════════════════════════════════════ */
 
 :root {
@@ -13,9 +11,9 @@
   --ink-light:  #7a6e5f;
   --line:       #c8bfaa;
   --line-bold:  #8a7e6d;
-  --accent:     #2d6a4f;      /* forest green */
-  --accent2:    #b5451b;      /* terracotta */
-  --accent3:    #8b5cf6;      /* violet for notes */
+  --accent:     #2d6a4f;
+  --accent2:    #b5451b;
+  --accent3:    #8b5cf6;
   --gold:       #c9820a;
   --cell-hover: #e8f4ee;
   --cell-sel:   #c3e8d4;
@@ -686,14 +684,112 @@ html, body {
 .pause-sub   { font-size: 0.82rem; color: var(--ink-light); font-style: italic; font-family: var(--font-display); }
 
 
-@media (max-width: 380px) {
-  .start-panel { padding: 24px 20px 28px; gap: 18px; }
-  .logo-title  { font-size: 1.6rem; }
-  .numpad      { gap: 3px; }
-  .num-btn     { font-size: 1rem; }
-  .tool-label  { display: none; }
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVE — replace the existing
+   @media blocks at the bottom of sudoku.css
+═══════════════════════════════════════ */
+
+/* ── Small phones (≤ 390px) ── */
+@media (max-width: 390px) {
+
+  /* Start panel — tighter padding, fits screen */
+  .start-panel {
+    padding: 18px 16px 22px;
+    gap: 14px;
+    border-radius: 16px;
+    width: 96%;
+    max-width: 100%;
+  }
+
+  /* Logo — smaller */
+  .logo-kanji { font-size: 2rem; padding: 4px 8px; }
+  .logo-title  { font-size: 1.35rem; }
+  .logo-tagline { font-size: 0.75rem; }
+
+  /* Hide mini demo grid on very small screens */
+  .mini-grid-demo { display: none; }
+
+  /* Diff tabs — more compact */
+  .diff-tab { padding: 8px 4px; border-radius: 8px; }
+  .diff-name { font-size: 0.8rem; }
+  .diff-desc { font-size: 0.62rem; }
+
+  /* Rules — tighter */
+  .rules-strip { padding: 10px 12px; gap: 6px; }
+  .rule { font-size: 0.75rem; gap: 8px; }
+  .rule-num { width: 18px; height: 18px; font-size: 0.65rem; }
+
+  /* Start button */
+  .btn-start-game { padding: 13px 20px; font-size: 0.95rem; }
+
+  /* Game board — full width */
+  .sudoku-board {
+    width: min(calc(100vw - 16px), 380px);
+  }
+
+  /* Numpad — bigger tap targets, bigger numbers */
+  .numpad { gap: 4px; }
+  .num-btn {
+    font-size: 1.3rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 0 var(--line-bold);
+  }
+
+  /* Tool buttons */
+  .tool-btn { padding: 8px 4px; border-radius: 8px; }
+  .tool-icon { font-size: 1rem; }
+  .tool-label { font-size: 0.6rem; }
+
+  /* Game header */
+  .game-header { padding: 8px 10px; }
+  .hdr-btn { width: 32px; height: 32px; font-size: 0.9rem; }
+  .hdr-timer { font-size: 0.95rem; }
+  .hdr-mistakes { font-size: 0.9rem; }
+
+  /* End panel */
+  .end-panel { padding: 24px 20px; gap: 14px; width: 96%; }
+  .end-heading { font-size: 1.7rem; }
+  .end-badge { font-size: 3rem; }
+  .es-val { font-size: 1.2rem; }
+}
+
+/* ── Mid phones (391px – 480px) ── */
+@media (min-width: 391px) and (max-width: 480px) {
+
+  .start-panel {
+    padding: 22px 20px 26px;
+    gap: 16px;
+    width: 94%;
+  }
+
+  .logo-kanji { font-size: 2.2rem; }
+  .logo-title  { font-size: 1.55rem; }
+
+  /* Shrink but keep mini demo */
+  .mgd-inner { width: min(200px, 100%); }
+
+  .numpad { gap: 4px; }
+  .num-btn { font-size: 1.2rem; }
+
+  .tool-label { font-size: 0.62rem; }
+
+  .sudoku-board {
+    width: min(calc(100vw - 20px), 420px);
+  }
+}
+
+/* ── Tablet and up (481px+) ── */
+@media (min-width: 481px) {
+  .num-btn { font-size: 1.25rem; }
+}
+
+/* ── Tall phones — give game screen more breathing room ── */
+@media (max-height: 750px) and (max-width: 480px) {
+  .game-main { gap: 10px; padding: 8px 10px 12px; }
+  .progress-section { display: none; } /* hide progress bar to save space */
+  .tool-btn { padding: 7px 4px; }
 }
 
 @media (min-height: 700px) {
-  .game-main { padding-top: 20px; }
+  .game-main { padding-top: 16px; }
 }
